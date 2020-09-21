@@ -4,9 +4,9 @@ from config import CLIENT_UUID, LIBRARY_WRAPPER, SERVER_ENDPOINT
 
 
 class Main:
-    def __init__(self, uuid, wrapper_name, endpoint):
+    def __init__(self, uuid, wrapper_name, endpoint, timeout=3):
         self.uuid = uuid
-        self.timeout = 3
+        self.timeout = timeout
         self.wrapper_name = wrapper_name
         self.endpoint = endpoint
 
