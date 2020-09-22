@@ -1,4 +1,4 @@
-CLIENT_UUID = ""
+SENSOR_UUID = ""
 
 # supported wrappers:
 #     wrappers.dht22:Dht22Wrapper

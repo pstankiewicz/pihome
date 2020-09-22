@@ -14,7 +14,7 @@ class Sensor(models.Model):
 class SensorData(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
     datetime = models.DateTimeField(auto_now_add=True)
-    value = models.DecimalField(default=0, max_digits=10, decimal_places=3)
+    value = models.DecimalField(default=0, max_digits=10, decimal_places=2)
 
     def __str__(self):
         return "%s %s" % (self.value, self.datetime)

@@ -1,6 +1,9 @@
+from urllib.parse import urljoin
+
 import import_string
 import requests
-from config import CLIENT_UUID, LIBRARY_WRAPPER, SERVER_ENDPOINT
+
+from config import LIBRARY_WRAPPER, SENSOR_UUID, SERVER_ENDPOINT
 
 
 class Main:
@@ -8,7 +11,7 @@ class Main:
         self.uuid = uuid
         self.timeout = timeout
         self.wrapper_name = wrapper_name
-        self.endpoint = endpoint
+        self.endpoint = urljoin(endpoint, "api/sensor-data/")
 
     def run(self):
         wrapper_class = import_string(self.wrapper_name)
@@ -17,10 +20,12 @@ class Main:
             "sensor": self.uuid,
             "value": wrapper.gather(),
         }
-        requests.post(self.endpoint, data=data, timeout=self.timeout)
+        result = requests.post(self.endpoint, data=data, timeout=self.timeout)
+        if result.status_code != 201:
+            print(result.text)
 
 
 if __name__ == "__main__":
 
-    app = Main(CLIENT_UUID, LIBRARY_WRAPPER, SERVER_ENDPOINT)
+    app = Main(SENSOR_UUID, LIBRARY_WRAPPER, SERVER_ENDPOINT)
     app.run()
