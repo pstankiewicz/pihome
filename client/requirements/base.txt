@@ -1,2 +1,3 @@
 requests
 import_string
+adafruit-circuitpython-dht
