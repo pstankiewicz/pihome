@@ -7,6 +7,7 @@ from requests.exceptions import ConnectionError
 from config import LIBRARY_WRAPPERS_AND_SENSOR_UUIDS, SERVER_ENDPOINT
 from wrappers.exceptions import WrapperException
 
+
 class Main:
     def __init__(self, wrapper_names, endpoint, timeout=3):
         self.timeout = timeout
@@ -23,7 +24,9 @@ class Main:
                     "value": wrapper.gather(),
                 }
                 try:
-                    result = requests.post(self.endpoint, data=data, timeout=self.timeout)
+                    result = requests.post(
+                        self.endpoint, data=data, timeout=self.timeout
+                    )
                 except ConnectionError as e:
                     print(e)
                 else:

@@ -22,6 +22,7 @@ Run devserver:
 
 `python manage.py runserver`
 
+Or run production server using all necessary precautions (collectstatic, static sering, modify settings for your database of choice, etc.)
 
 ## Usage
 
