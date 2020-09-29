@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Sensor, SensorData
+from .models import Alert, AlertLog, Sensor, SensorData
 
 
 class SensorDataInline(admin.TabularInline):
@@ -29,3 +29,5 @@ class SensorAdmin(admin.ModelAdmin):
 
 
 admin.site.register(SensorData)
+admin.site.register(Alert)
+admin.site.register(AlertLog)

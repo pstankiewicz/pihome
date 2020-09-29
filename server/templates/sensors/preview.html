@@ -1,0 +1,10 @@
+{% for sensor in sensors %}
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+        <div class="tile-stats">
+            <div class="icon"><i class="fa fa-line-chart"></i></div>
+            <div class="count">{{ sensor.last_value|default:"0.00" }} {{ sensor.unit|default:"" }}</div>
+            <h3>{{ sensor.name }}</h3>
+            <p><a href="{% url 'sensor-details' sensor.uuid %}">{{ sensor.uuid }}</a></p>
+        </div>
+    </div>
+{% endfor %}

@@ -7,9 +7,13 @@ from djchoices import ChoiceItem, DjangoChoices
 class Sensor(models.Model):
     name = models.CharField(max_length=64)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    unit = models.CharField(max_length=32, blank=True, null=True)
 
     def __str__(self):
         return "%s [%s]" % (self.name, self.uuid)
+
+    def last_value(self):
+        return self.sensordata_set.last().value
 
 
 class SensorData(models.Model):
@@ -40,7 +44,11 @@ class Alert(models.Model):
     active = models.BooleanField()
     period_minutes = models.IntegerField(blank=True, null=True)
     trigger_type = models.CharField(max_length=3, choices=TriggerType.choices)
+    trigger_value = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     trigger_count_for_email = models.IntegerField(default=1)
+
+    def __str__(self):
+        return "Alert: %s for sensor: %s" % (self.name, self.sensor)
 
 
 class Email(models.Model):

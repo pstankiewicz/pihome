@@ -1,0 +1,10 @@
+<h3>General</h3>
+<ul class="nav side-menu">
+    <li><a><i class="fa fa-home"></i> Sensors <span class="fa fa-chevron-down"></span></a>
+    <ul class="nav child_menu">
+        {% for sensor in sensors %}
+            <li><a href="{% url 'sensor-details' sensor.uuid %}">{{ sensor.name }}</a></li>
+        {% endfor %}
+    </ul>
+    </li>
+</ul>
