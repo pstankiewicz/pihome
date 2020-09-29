@@ -24,6 +24,9 @@ class SensorData(models.Model):
     def __str__(self):
         return "%s %s" % (self.value, self.datetime)
 
+    def float_value(self):
+        return float(self.value)
+
 
 class Alert(models.Model):
     class AlertType(DjangoChoices):
