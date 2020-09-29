@@ -12,12 +12,14 @@ class SensorDataInline(admin.TabularInline):
         "datetime",
     ]
     ordering = ["datetime"]
+    max_num = 50
 
 
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
     fields = [
         "name",
+        "unit",
         "uuid",
     ]
     readonly_fields = [
