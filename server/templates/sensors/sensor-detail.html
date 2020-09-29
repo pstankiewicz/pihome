@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load l10n %}
 
 {% block content %}
 <div class="row">
@@ -43,7 +44,7 @@
                     pointHoverBackgroundColor: "#fff",
                     pointHoverBorderColor: "rgba(220,220,220,1)",
                     pointBorderWidth: 1,
-                    data: [{% for data in sensor_data %} {{ data.float_value }} {% if not forloop.last %},{% endif %} {% endfor %}]
+                    data: [{% for data in sensor_data %} {{ data.value|unlocalize }} {% if not forloop.last %},{% endif %} {% endfor %}]
                 }]
             },
         });
