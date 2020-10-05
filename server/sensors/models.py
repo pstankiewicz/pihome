@@ -12,8 +12,8 @@ class Sensor(models.Model):
     def __str__(self):
         return "%s [%s]" % (self.name, self.uuid)
 
-    def last_value(self):
-        return self.sensordata_set.last().value
+    def last_data(self):
+        return self.sensordata_set.last()
 
 
 class SensorData(models.Model):

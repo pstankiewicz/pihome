@@ -4,7 +4,7 @@ import import_string
 import requests
 from requests.exceptions import ConnectionError
 
-from config import LIBRARY_WRAPPERS_AND_SENSOR_UUIDS, SERVER_ENDPOINT
+from config import AUTH_TOKEN, LIBRARY_WRAPPERS_AND_SENSOR_UUIDS, SERVER_ENDPOINT
 from wrappers.exceptions import WrapperException
 
 
@@ -18,6 +18,7 @@ class Main:
         for wrapper_name, sensor_uuid in self.wrapper_names:
             wrapper_class = import_string(wrapper_name)
             wrapper = wrapper_class()
+            headers = {"Authorization": "Token {}".format(AUTH_TOKEN)}
             try:
                 data = {
                     "sensor": sensor_uuid,
@@ -25,7 +26,10 @@ class Main:
                 }
                 try:
                     result = requests.post(
-                        self.endpoint, data=data, timeout=self.timeout
+                        self.endpoint,
+                        data=data,
+                        timeout=self.timeout,
+                        headers=headers,
                     )
                 except ConnectionError as e:
                     print(e)
