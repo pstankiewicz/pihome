@@ -26,30 +26,55 @@
 
 {% block custom_js %}
 <script type="text/javascript">
-    // Line chart
+    var chart_data = {};
+    function respondCanvas() {
+        // Line chart
 
-    if ($('#sensorChart').length) {
+        if ($('#sensorChart').length) {
+            
+            var ctx = document.getElementById("sensorChart");
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: chart_data
+            });
 
-        var ctx = document.getElementById("sensorChart");
-        var lineChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [{% for data in sensor_data %} "{{ data.datetime }}" {% if not forloop.last %},{% endif %} {% endfor %}],
-                datasets: [{
-                    label: "{{ sensor.name }}",
-                    backgroundColor: "rgba(38, 185, 154, 0.31)",
-                    borderColor: "rgba(38, 185, 154, 0.7)",
-                    pointBorderColor: "rgba(38, 185, 154, 0.7)",
-                    pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-                    pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
-                    pointBorderWidth: 1,
-                    data: [{% for data in sensor_data %} {{ data.value|unlocalize }} {% if not forloop.last %},{% endif %} {% endfor %}]
-                }]
-            },
-        });
-
+        }
     }
+
+    var GetChartData = function () {
+        $.ajax({
+            url: "{% url 'sensordata-list' %}?sensor={{ sensor.uuid }}",
+            method: 'GET',
+            dataType: 'json',
+            success: function (d) {
+                labels = [];
+                data = [];
+                d.forEach(function(obj) {
+                    labels.push(obj.datetime);
+                    data.push(obj.value);
+                });
+                chart_data = {
+                    labels: labels,
+                    datasets: [{
+                        label: "{{ sensor.name }}",
+                        backgroundColor: "rgba(38, 185, 154, 0.31)",
+                        borderColor: "rgba(38, 185, 154, 0.7)",
+                        pointBorderColor: "rgba(38, 185, 154, 0.7)",
+                        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointBorderWidth: 1,
+                        data: data
+                    }]
+                }
+
+                respondCanvas();
+            }
+        });
+    };
+    $(document).ready(function(){
+        GetChartData();
+    })
 </script>
 
 {% endblock %}

@@ -9,13 +9,13 @@ from wrappers.exceptions import WrapperException
 
 
 class Main:
-    def __init__(self, wrapper_names, endpoint, timeout=3):
+    def __init__(self, wrapper_data, endpoint, timeout=3):
         self.timeout = timeout
-        self.wrapper_names = wrapper_names
+        self.wrapper_data = wrapper_data
         self.endpoint = urljoin(endpoint, "api/sensor-data/")
 
     def run(self):
-        for wrapper_name, sensor_uuid in self.wrapper_names:
+        for wrapper_name, sensor_uuid in self.wrapper_data:
             wrapper_class = import_string(wrapper_name)
             wrapper = wrapper_class()
             headers = {"Authorization": "Token {}".format(AUTH_TOKEN)}

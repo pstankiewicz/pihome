@@ -10,9 +10,10 @@ class SensorDataViewSet(viewsets.ModelViewSet):
     authentication_classes = [
         TokenAuthentication,
     ]
-    queryset = SensorData.objects.all().order_by("-datetime")
+    queryset = SensorData.objects.all().order_by("datetime")
     serializer_class = SensorDataSerializer
     http_method_names = [
+        "get",
         "post",
     ]
 

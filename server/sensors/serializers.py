@@ -9,4 +9,5 @@ class SensorDataSerializer(serializers.ModelSerializer):
         fields = [
             "value",
             "sensor",
+            "datetime",
         ]
