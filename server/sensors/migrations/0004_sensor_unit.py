@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sensors', '0003_alert_trigger_value'),
+        ("sensors", "0003_alert_trigger_value"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='sensor',
-            name='unit',
+            model_name="sensor",
+            name="unit",
             field=models.CharField(blank=True, max_length=32, null=True),
         ),
     ]
