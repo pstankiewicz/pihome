@@ -1,5 +1,6 @@
 -r base.txt
 black
+coverage
 factory_boy
 freezegun
 ipython
