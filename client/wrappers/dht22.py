@@ -5,7 +5,7 @@ import time
 from .exceptions import WrapperException
 
 
-class Dht22WrapperTemperature():
+class Dht22WrapperTemperature:
     def __init__(self):
         self.sensor = adafruit_dht.DHT22(board.D4)
         self.sleep_time = 2.0
@@ -22,7 +22,7 @@ class Dht22WrapperTemperature():
                 print(e)
                 time.sleep(self.sleep_time)
                 continue
-    
+
         self.sensor.exit()
         if result:
             return result
