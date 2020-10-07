@@ -21,4 +21,4 @@ jobs:
     - name: Test
       run: cd server && coverage run manage.py test --settings=pihome_server.settings.ci
     - name: Coverage report
-      run: cs server && coverage report -m
+      run: cd server && coverage report -m
