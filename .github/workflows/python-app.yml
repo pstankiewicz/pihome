@@ -17,7 +17,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install black
         pip install -r server/requirements/dev.txt
-    - name: Lint with flake8
-      run: black --diff ./
+    - name: Lint with blake
+      run: black --diff --color ./ && black --check ./
     - name: Test
       run: cd server && python3 manage.py test --settings=pihome_server.settings.ci
