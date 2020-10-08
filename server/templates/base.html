@@ -67,9 +67,12 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <div class="row">
-            {% sensors_preview %}
-          </div>
+          {% block sensors_preview %}
+            <div class="row">
+              {% sensors_preview %}
+            </div>
+          {% endblock sensors_preview %}
+
           {% block content %} {% endblock %}
         </div>
         <!-- /top tiles -->

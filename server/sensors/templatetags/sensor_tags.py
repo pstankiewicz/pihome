@@ -14,7 +14,7 @@ def sensors_menu():
 @register.inclusion_tag("sensors/preview.html")
 def sensors_preview(sensor_uuid=None):
     if sensor_uuid:
-        sensors = Sensor.obejects.get(uuid=sensor_uuid)
+        sensors = Sensor.objects.filter(uuid=sensor_uuid)
     else:
         sensors = Sensor.objects.all()
     return {
