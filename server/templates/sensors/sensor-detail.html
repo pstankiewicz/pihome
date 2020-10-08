@@ -48,7 +48,7 @@
         var yyyy = today.getFullYear();
         today = yyyy + "-" + mm + "-" + dd;
         $.ajax({
-            url: "{% url 'sensordata-list' %}?sensor={{ sensor.uuid }}?date_from=" + today,
+            url: "{% url 'sensordata-list' %}?sensor={{ sensor.uuid }}&date_from=" + today,
             method: 'GET',
             dataType: 'json',
             success: function (d) {
