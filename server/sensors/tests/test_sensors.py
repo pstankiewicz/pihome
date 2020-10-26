@@ -130,6 +130,37 @@ class SensorDataPOSTTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 6)
 
+    @freeze_time("2020-10-07")
+    def test_get_should_filter_by_period_overridding_data_by_date_from_and_date_to(
+        self,
+    ):
+        # Arrange
+        new_sensor = SensorFactory.create()
+        data = {
+            "sensor": new_sensor.uuid,
+            "date_from": "2020-10-05",
+            "date_to": "2020-10-06",
+            "period": "today"
+        }
+        for date in [
+            "2020-10-04",
+            "2020-10-05",
+            "2020-10-06",
+            "2020-10-07",
+        ]:
+            with freeze_time(date):
+                SensorDataFactory.create_batch(
+                    3,
+                    sensor=new_sensor,
+                )
+
+        # Act
+        response = self.client.get("/api/sensor-data/", data)
+
+        # Assert
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+
     @freeze_time("2020-10-03")
     def test_get_should_receive_data_with_correct_datetime_format(self):
         # Arrange
