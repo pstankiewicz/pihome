@@ -140,7 +140,7 @@ class SensorDataPOSTTestCase(TestCase):
             "sensor": new_sensor.uuid,
             "date_from": "2020-10-05",
             "date_to": "2020-10-06",
-            "period": "today"
+            "period": "today",
         }
         for date in [
             "2020-10-04",
