@@ -5,3 +5,4 @@ factory_boy
 freezegun
 ipython
 ipdb
+pycodestyle

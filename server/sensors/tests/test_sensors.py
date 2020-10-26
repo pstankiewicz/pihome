@@ -1,15 +1,17 @@
 from freezegun import freeze_time
 import uuid
 
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from ..factories import SensorDataFactory, SensorFactory
 from ..models import SensorData
+from ..views import SensorDataViewSet
 
 
-class SensorDataTestCase(TestCase):
+class SensorDataPOSTTestCase(TestCase):
     def setUp(self):
         self.sensor = SensorFactory()
         self.client = APIClient()
@@ -145,3 +147,96 @@ class SensorDataTestCase(TestCase):
         # Assert
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()[0]["datetime"], "2020-10-03 00:00:00")
+
+    def test_inactive_sensor_uuid_post_causes_400(self):
+        # Arrange
+        new_sensor = SensorFactory.create(active=False)
+        data = {
+            "sensor": new_sensor.uuid,
+            "value": 0,
+        }
+
+        # Act
+        response = self.client.post("/api/sensor-data/", data)
+
+        # Assert
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(SensorData.objects.count(), 0)
+
+
+class SensorDataGETTestCase(TestCase):
+    def setUp(self):
+        self.sensor = SensorFactory()
+        self.client = Client()
+
+    def test_existing_sensor_returns_data(self):
+        # Arrange
+        url = reverse("sensor-details", args=[self.sensor.uuid])
+
+        # Act
+        response = self.client.get(url)
+
+        # Assert
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class SensorViewTestCase(TestCase):
+    @freeze_time("2020-10-03")
+    def test_period_extraction_default(self):
+        # Arrange
+        view_class = SensorDataViewSet()
+
+        # Act
+        date_from, date_to = view_class._extract_dates_from_period("")
+
+        # Assert
+        self.assertEqual(date_from, "2020-10-03 00:00:00")
+        self.assertEqual(date_to, "2020-10-03 23:59:59")
+
+    @freeze_time("2020-10-03")
+    def test_period_extraction_today(self):
+        # Arrange
+        view_class = SensorDataViewSet()
+
+        # Act
+        date_from, date_to = view_class._extract_dates_from_period("today")
+
+        # Assert
+        self.assertEqual(date_from, "2020-10-03 00:00:00")
+        self.assertEqual(date_to, "2020-10-03 23:59:59")
+
+    @freeze_time("2020-10-03")
+    def test_period_extraction_yesterday(self):
+        # Arrange
+        view_class = SensorDataViewSet()
+
+        # Act
+        date_from, date_to = view_class._extract_dates_from_period("yesterday")
+
+        # Assert
+        self.assertEqual(date_from, "2020-10-02 00:00:00")
+        self.assertEqual(date_to, "2020-10-02 23:59:59")
+
+    @freeze_time("2020-10-03")
+    def test_period_extraction_this_week(self):
+        # Arrange
+        view_class = SensorDataViewSet()
+
+        # Act
+        date_from, date_to = view_class._extract_dates_from_period("this-week")
+
+        # Assert
+        self.assertEqual(date_from, "2020-09-28 00:00:00")
+        self.assertEqual(date_to, "2020-10-04 23:59:59")
+
+    @freeze_time("2020-10-03")
+    def test_period_extraction_last_week(self):
+        # Arrange
+        view_class = SensorDataViewSet()
+
+        # Act
+        date_from, date_to = view_class._extract_dates_from_period("last-week")
+
+        # Assert
+        self.assertEqual(date_from, "2020-09-21 00:00:00")
+        self.assertEqual(date_to, "2020-09-27 23:59:59")

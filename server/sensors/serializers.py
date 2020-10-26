@@ -15,3 +15,10 @@ class SensorDataSerializer(serializers.ModelSerializer):
             "sensor",
             "datetime",
         ]
+
+    def validate(self, attrs):
+        if not attrs["sensor"].active:
+            raise serializers.ValidationError(
+                "Sensor %s is not active" % attrs["sensor"]
+            )
+        return attrs

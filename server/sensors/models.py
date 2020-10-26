@@ -8,6 +8,7 @@ class Sensor(models.Model):
     name = models.CharField(max_length=64)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     unit = models.CharField(max_length=32, blank=True, null=True)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return "%s [%s]" % (self.name, self.uuid)

@@ -5,6 +5,7 @@ from .models import Alert, AlertLog, Sensor, SensorData
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
     fields = [
+        "active",
         "name",
         "unit",
         "uuid",
