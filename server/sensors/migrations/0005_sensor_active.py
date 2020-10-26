@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sensors', '0004_sensor_unit'),
+        ("sensors", "0004_sensor_unit"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='sensor',
-            name='active',
+            model_name="sensor",
+            name="active",
             field=models.BooleanField(default=True),
         ),
     ]
